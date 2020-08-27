@@ -91,7 +91,9 @@ def printUsage():
     4: undirected graph
     5: directed acyclic graph
     6: weighted graph, undirected
-    7: weighted graph, directed\
+    7: weighted graph, directed
+
+    use the -h or --help flags as the first argument to display this help menu.\
     """))
 
 def main():
@@ -99,6 +101,10 @@ def main():
         print("too many arguments.", end=' ')
         printUsage()
         sys.exit(1)
+
+    elif sys.argv[1] == "-h" or sys.argv[1] == "--help":
+        printUsage()
+        sys.exit(0)
 
     try:
         if len(sys.argv) == 1: g1 = Graph() # no argument; defaults to NONE type (disconnected nodes)
