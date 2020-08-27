@@ -9,7 +9,7 @@
 # with some of the more involved graph traversal algorithms, we can increase that number
 # to challenge students to accurately predict what the algo will do next.
 
-# written by Agustin Forero
+# written by Agustin
 
 import sys
 from textwrap import dedent
