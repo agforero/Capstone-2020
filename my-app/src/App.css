@@ -1,0 +1,74 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 40s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.nodeZone {
+  border-color: black;
+  background-color: rgb(190, 190, 190);
+
+  margin: auto;
+  padding: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.nodeCircle {
+  height: 125px;
+  width: 125px;
+  background-color: rgb(224, 255, 252);
+  border: 3px solid black;
+  border-width: 3px;
+  border-radius: 50%;
+
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.nodeCircle:hover {
+  background-color: rgb(64, 204, 190);
+  border-width: 3px;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat+Alternates');
+.nodeText {
+  padding: 10px;
+  padding-top: 25%;
+  font-family: "Montserrat Alternates", sans-serif;
+}
