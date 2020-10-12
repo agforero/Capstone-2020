@@ -2,6 +2,6 @@
 
 int main(int argc, char ** argv) {
     Graph granny(DAG);
-    granny.dataToJSON();
+    granny.dataToJSON(); 
     return 0;
 }

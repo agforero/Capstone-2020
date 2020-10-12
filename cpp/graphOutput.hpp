@@ -6,10 +6,6 @@
 #include <algorithm>
 using namespace std;
 
-// the thing Richey once said was a bad idea but here I go anyways
-#define CC cout <<
-#define EE << endl
-
 int itest = 0;
 #define ITEST cout << "TEST #" << itest++ << endl;
 
@@ -115,17 +111,17 @@ private:
 public:
     // constructor
     Graph(TYPE t=NONE, int s=8, bool a=true) {
-        srand(time(NULL)); // start random seed; imperative for random generation later
-        startCount = s;
-        alpha = a;
+        srand(time(NULL)); 
+        startCount = s; 
+        alpha = a; 
 
         switch(t) {
             case NONE:
                 generateNONE();
                 break;
             case DAG:
-                generateDAG();
-                break;
+                generateDAG(); 
+                break; 
         }
     }
 
@@ -162,7 +158,7 @@ public:
             int randoms = rand() % 3 + 1;
             vector<int> newConns;
             for (int i = 0; i < randoms; i++) {
-                int nextCandidate = (rand() % (allNodes.size() - i - 1)) + (i + 1); // gens rand number i+1 to end
+                int nextCandidate = (rand() % (allNodes.size() - i - 2)) + (i + 2); // gens rand number i+1 to end
                 newConns.push_back(nextCandidate); // add to newConns
             }
             for (int j = 0; j < newConns.size(); j++) {
@@ -170,10 +166,10 @@ public:
             }
 
             // rarely, itself
-            if (rand() % 20) { // 1 in 20 chance(?)
+            if (!(rand() % 20)) { // 1 in 20 chance(?)
                 allEdges.push_back(createEdge(i, i));
             }
-        }
+        } 
     }
 
     // returns an annotation value depending on adjacency to head node.
@@ -195,36 +191,36 @@ public:
 
     // JSON output functions. you know, this would have been easier with printf(), but that's ok :)
     void dataToJSON() {
-        CC "let Frames = [" EE;
-        CC "\t{" EE;
-        CC "\t\t\"type\": \"animation\"," EE; // brain hurty
+        cout << "let Frames = [" << endl;
+        cout << "\t{" << endl;
+        cout << "\t\t\"type\": \"animation\"," << endl; // brain hurty
 
         // print all the nodes
-        CC "\t\t\"nodes\": {" EE;
+        cout << "\t\t\"nodes\": {" << endl;
         for (int i = 0; i < allNodes.size(); i++) {
-            CC "\t\t\t\"" << allNodes[i]->getID() << "\": {" EE;
-            CC "\t\t\t\t\"id\": "           << allNodes[i]->getID()                             << "," EE;
-            CC "\t\t\t\t\"name\": \""       << allNodes[i]->getVal()                            << "\"," EE;
-            CC "\t\t\t\t\"position\": { "   << "\"x\": " << 50*(i+1) << ", \"y\": " << 50*(i+1) << " }," EE;
-            CC "\t\t\t\t\"color\": "        << vectorColor(i)                                   << "," EE;
-            CC "\t\t\t\t\"annotation\": "   << getAnnotation(i)                                 << "," EE;
-            CC "\t\t\t}," EE;
+            cout << "\t\t\t\"" << allNodes[i]->getID() << "\": {" << endl;
+            cout << "\t\t\t\t\"id\": "           << allNodes[i]->getID()                             << "," << endl;
+            cout << "\t\t\t\t\"name\": \""       << allNodes[i]->getVal()                            << "\"," << endl;
+            cout << "\t\t\t\t\"position\": { "   << "\"x\": " << 50*(i+1) << ", \"y\": " << 50*(i+1) << " }," << endl;
+            cout << "\t\t\t\t\"color\": "        << vectorColor(i)                                   << "," << endl;
+            cout << "\t\t\t\t\"annotation\": "   << getAnnotation(i)                                 << "," << endl;
+            cout << "\t\t\t}," << endl;
         }
-        CC "\t\t}," EE;
+        cout << "\t\t}," << endl;
 
         // print all the edges
-        CC "\t\t\"edges\": {" EE;
+        cout << "\t\t\"edges\": {" << endl;
         for (int i = 0; i < allEdges.size(); i++) {
-            CC "\t\t\t\"" << allEdges[i][0] << "-" << allEdges[i][1] << "\": {" EE;
-            CC "\t\t\t\t\"start\": "    << allEdges[i][0]       << "," EE;
-            CC "\t\t\t\t\"end\": "      << allEdges[i][1]       << "," EE;
-            CC "\t\t\t\t\"weight\": "   << allEdges[i][2]       << "," EE;
-            CC "\t\t\t}," EE;
+            cout << "\t\t\t\"" << allEdges[i][0] << "-" << allEdges[i][1] << "\": {" << endl;
+            cout << "\t\t\t\t\"start\": "    << allEdges[i][0]       << "," << endl;
+            cout << "\t\t\t\t\"end\": "      << allEdges[i][1]       << "," << endl;
+            cout << "\t\t\t\t\"weight\": "   << allEdges[i][2]       << "," << endl;
+            cout << "\t\t\t}," << endl;
         }
-        CC "\t\t}," EE;
+        cout << "\t\t}," << endl;
 
         // ending everything else
-        CC "\t}," EE;
-        CC "]" EE;
+        cout << "\t}," << endl;
+        cout << "]" << endl;
     }
 };
