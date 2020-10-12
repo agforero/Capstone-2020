@@ -4,59 +4,59 @@ let Frames = [
 		"nodes": {
 			"0": {
 				"id": 0,
-				"name": A",
+				"name": "A",
 				"position": { "x": 50, "y": 50 },
 				"color": "#0f0",
 				"annotation": "0",
 			},
 			"1": {
 				"id": 1,
-				"name": ",
+				"name": "B",
 				"position": { "x": 100, "y": 100 },
 				"color": "#f00",
 				"annotation": "1",
 			},
 			"2": {
 				"id": 2,
-				"name": ",
+				"name": "C",
 				"position": { "x": 150, "y": 150 },
 				"color": "#f00",
 				"annotation": "inf?",
 			},
 			"3": {
 				"id": 3,
-				"name": ",
+				"name": "D",
 				"position": { "x": 200, "y": 200 },
 				"color": "#f00",
-				"annotation": "inf?",
+				"annotation": "3",
 			},
 			"4": {
 				"id": 4,
-				"name": ",
+				"name": "E",
 				"position": { "x": 250, "y": 250 },
 				"color": "#f00",
 				"annotation": "inf?",
 			},
 			"5": {
 				"id": 5,
-				"name": ",
+				"name": "F",
 				"position": { "x": 300, "y": 300 },
 				"color": "#f00",
 				"annotation": "inf?",
 			},
 			"6": {
 				"id": 6,
-				"name": ",
+				"name": "G",
 				"position": { "x": 350, "y": 350 },
 				"color": "#f00",
 				"annotation": "inf?",
 			},
 			"7": {
 				"id": 7,
-				"name": ",
+				"name": "H",
 				"position": { "x": 400, "y": 400 },
 				"color": "#f00",
-				"annotation": "inf?",
+				"annotation": "7",
 			},
 		},
 		"edges": {
@@ -65,9 +65,19 @@ let Frames = [
 				"end": 1,
 				"weight": 1,
 			},
-			"0-1": {
+			"0-7": {
 				"start": 0,
-				"end": 1,
+				"end": 7,
+				"weight": 1,
+			},
+			"0-7": {
+				"start": 0,
+				"end": 7,
+				"weight": 1,
+			},
+			"0-3": {
+				"start": 0,
+				"end": 3,
 				"weight": 1,
 			},
 			"0-0": {
@@ -80,19 +90,14 @@ let Frames = [
 				"end": 2,
 				"weight": 1,
 			},
-			"1-2": {
+			"1-6": {
 				"start": 1,
-				"end": 2,
+				"end": 6,
 				"weight": 1,
 			},
-			"1-3": {
+			"1-7": {
 				"start": 1,
-				"end": 3,
-				"weight": 1,
-			},
-			"1-3": {
-				"start": 1,
-				"end": 3,
+				"end": 7,
 				"weight": 1,
 			},
 			"1-1": {
@@ -105,14 +110,19 @@ let Frames = [
 				"end": 3,
 				"weight": 1,
 			},
-			"2-5": {
+			"2-7": {
 				"start": 2,
-				"end": 5,
+				"end": 7,
 				"weight": 1,
 			},
-			"2-5": {
+			"2-4": {
 				"start": 2,
-				"end": 5,
+				"end": 4,
+				"weight": 1,
+			},
+			"2-4": {
+				"start": 2,
+				"end": 4,
 				"weight": 1,
 			},
 			"2-2": {
@@ -123,6 +133,16 @@ let Frames = [
 			"3-4": {
 				"start": 3,
 				"end": 4,
+				"weight": 1,
+			},
+			"3-6": {
+				"start": 3,
+				"end": 6,
+				"weight": 1,
+			},
+			"3-6": {
+				"start": 3,
+				"end": 6,
 				"weight": 1,
 			},
 			"3-3": {
@@ -140,9 +160,14 @@ let Frames = [
 				"end": 5,
 				"weight": 1,
 			},
-			"4-3": {
+			"4-6": {
 				"start": 4,
-				"end": 3,
+				"end": 6,
+				"weight": 1,
+			},
+			"4-5": {
+				"start": 4,
+				"end": 5,
 				"weight": 1,
 			},
 			"4-4": {
@@ -155,9 +180,14 @@ let Frames = [
 				"end": 6,
 				"weight": 1,
 			},
-			"5-7": {
+			"5-1": {
 				"start": 5,
-				"end": 7,
+				"end": 1,
+				"weight": 1,
+			},
+			"5-3": {
+				"start": 5,
+				"end": 3,
 				"weight": 1,
 			},
 			"5-5": {
@@ -170,9 +200,9 @@ let Frames = [
 				"end": 7,
 				"weight": 1,
 			},
-			"6-4": {
+			"6-7": {
 				"start": 6,
-				"end": 4,
+				"end": 7,
 				"weight": 1,
 			},
 			"6-6": {

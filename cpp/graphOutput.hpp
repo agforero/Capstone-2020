@@ -64,7 +64,7 @@ string intToAlphaID(int n) {
 
     string ret = "";
     while (n > 0) {
-        ret.append(0, letterVals[(n % 26)]);
+        ret += letterVals[(n % 26)];
         n /= 26; // should round down and be ok.
     }
     return ret;
@@ -203,9 +203,9 @@ public:
         CC "\t\t\"nodes\": {" EE;
         for (int i = 0; i < allNodes.size(); i++) {
             CC "\t\t\t\"" << allNodes[i]->getID() << "\": {" EE;
-            CC "\t\t\t\t\"id\": "         << allNodes[i]->getID()                             << "," EE;
-            CC "\t\t\t\t\"name\": "         << allNodes[i]->getVal()                            << "\"," EE;
-            CC "\t\t\t\t\"position\": { "   << "\"x\": " << 50*(i+1) << ", \"y\": " << 50*(i+1)   << " }," EE;
+            CC "\t\t\t\t\"id\": "           << allNodes[i]->getID()                             << "," EE;
+            CC "\t\t\t\t\"name\": \""       << allNodes[i]->getVal()                            << "\"," EE;
+            CC "\t\t\t\t\"position\": { "   << "\"x\": " << 50*(i+1) << ", \"y\": " << 50*(i+1) << " }," EE;
             CC "\t\t\t\t\"color\": "        << vectorColor(i)                                   << "," EE;
             CC "\t\t\t\t\"annotation\": "   << getAnnotation(i)                                 << "," EE;
             CC "\t\t\t}," EE;
