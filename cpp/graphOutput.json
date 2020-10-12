@@ -1,0 +1,185 @@
+let Frames = [
+	{
+		"type": "animation",
+		"nodes": {
+			"0": {
+				"id": 0,
+				"name": A",
+				"position": { "x": 50, "y": 50 },
+				"color": "#0f0",
+				"annotation": "0",
+			},
+			"1": {
+				"id": 1,
+				"name": ",
+				"position": { "x": 100, "y": 100 },
+				"color": "#f00",
+				"annotation": "1",
+			},
+			"2": {
+				"id": 2,
+				"name": ",
+				"position": { "x": 150, "y": 150 },
+				"color": "#f00",
+				"annotation": "inf?",
+			},
+			"3": {
+				"id": 3,
+				"name": ",
+				"position": { "x": 200, "y": 200 },
+				"color": "#f00",
+				"annotation": "inf?",
+			},
+			"4": {
+				"id": 4,
+				"name": ",
+				"position": { "x": 250, "y": 250 },
+				"color": "#f00",
+				"annotation": "inf?",
+			},
+			"5": {
+				"id": 5,
+				"name": ",
+				"position": { "x": 300, "y": 300 },
+				"color": "#f00",
+				"annotation": "inf?",
+			},
+			"6": {
+				"id": 6,
+				"name": ",
+				"position": { "x": 350, "y": 350 },
+				"color": "#f00",
+				"annotation": "inf?",
+			},
+			"7": {
+				"id": 7,
+				"name": ",
+				"position": { "x": 400, "y": 400 },
+				"color": "#f00",
+				"annotation": "inf?",
+			},
+		},
+		"edges": {
+			"0-1": {
+				"start": 0,
+				"end": 1,
+				"weight": 1,
+			},
+			"0-1": {
+				"start": 0,
+				"end": 1,
+				"weight": 1,
+			},
+			"0-0": {
+				"start": 0,
+				"end": 0,
+				"weight": 1,
+			},
+			"1-2": {
+				"start": 1,
+				"end": 2,
+				"weight": 1,
+			},
+			"1-2": {
+				"start": 1,
+				"end": 2,
+				"weight": 1,
+			},
+			"1-3": {
+				"start": 1,
+				"end": 3,
+				"weight": 1,
+			},
+			"1-3": {
+				"start": 1,
+				"end": 3,
+				"weight": 1,
+			},
+			"1-1": {
+				"start": 1,
+				"end": 1,
+				"weight": 1,
+			},
+			"2-3": {
+				"start": 2,
+				"end": 3,
+				"weight": 1,
+			},
+			"2-5": {
+				"start": 2,
+				"end": 5,
+				"weight": 1,
+			},
+			"2-5": {
+				"start": 2,
+				"end": 5,
+				"weight": 1,
+			},
+			"2-2": {
+				"start": 2,
+				"end": 2,
+				"weight": 1,
+			},
+			"3-4": {
+				"start": 3,
+				"end": 4,
+				"weight": 1,
+			},
+			"3-3": {
+				"start": 3,
+				"end": 3,
+				"weight": 1,
+			},
+			"3-3": {
+				"start": 3,
+				"end": 3,
+				"weight": 1,
+			},
+			"4-5": {
+				"start": 4,
+				"end": 5,
+				"weight": 1,
+			},
+			"4-3": {
+				"start": 4,
+				"end": 3,
+				"weight": 1,
+			},
+			"4-4": {
+				"start": 4,
+				"end": 4,
+				"weight": 1,
+			},
+			"5-6": {
+				"start": 5,
+				"end": 6,
+				"weight": 1,
+			},
+			"5-7": {
+				"start": 5,
+				"end": 7,
+				"weight": 1,
+			},
+			"5-5": {
+				"start": 5,
+				"end": 5,
+				"weight": 1,
+			},
+			"6-7": {
+				"start": 6,
+				"end": 7,
+				"weight": 1,
+			},
+			"6-4": {
+				"start": 6,
+				"end": 4,
+				"weight": 1,
+			},
+			"6-6": {
+				"start": 6,
+				"end": 6,
+				"weight": 1,
+			},
+		},
+	},
+]
