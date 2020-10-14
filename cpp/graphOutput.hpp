@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <string.h>
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
@@ -55,8 +56,8 @@ void printInvalidArgs() {
 
 // gets next command line arg from this flag; or, if it doesn't exist, throws an error 
 int getFlagArg(int argc, char ** argv, string flag) {
-    for (int i = 1; i < argc-2; i++) { // skip executable and last arg
-        if (flag.compare(argv[i]) && argv[i][0] != '-') {
+    for (int i = 1; i < argc-1; i++) { // skip executable and last arg
+        if (flag.compare(argv[i]) == 0) {
             return atoi(argv[i+1]); // shouldn't be a flag.
         }
     }
@@ -68,9 +69,9 @@ void printHelp() { // by God, is there a better way to do this? perhaps.
     cout << "usage: ./graphOutputDriver graphType (flags)" << endl;
     cout << endl;
     cout << "graphType values:" << endl;
-    cout << "0: none (a bunch of disconnected nodes)" << endl;
+    cout << "0: none" << endl;
     cout << "1: directed acyclic graph" << endl;
-    cout << "2: linked list, directed" << endl;
+    cout << "2: linked list" << endl;
     cout << endl;
     cout << "optional flags available:" << endl;
     cout << "-nodes <n>\tforce the creation of n nodes in the graph. default 8." << endl;
@@ -130,17 +131,25 @@ public:
         srand(time(NULL)); 
         
         // sift through args; see if we need to override defaults
-        // see if we can't start by extrapolating graph type
+        // start by checking for -h or --help
+        for (int i = 1; i < argc; i++) {
+            if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
+                printHelp(); exit(0);
+            }
+        }
+
+        // see if we can't extrapolate graph type
         if (argc >= 2) {
             t = atoi(argv[1]); // should return 0 if nothing else...bug proof??
         }
 
+        // process other arguments
         for (int i = 2; i < argc-1; i++) { // skip executable name and graph type
-            string argToString = argv[i];
-            if (argToString.compare("-h") == 0 || argToString.compare("--help") == 0) {
+            //string argToString = argv[i];
+            if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
                 printHelp(); exit(0); // terminate 
             }
-            else if (argToString.compare("-nodes") == 0) {
+            else if (strcmp(argv[i], "-nodes") == 0) {
                 startCount = getFlagArg(argc, argv, "-nodes");
             }
         }
@@ -177,29 +186,32 @@ public:
             allNodes.push_back(createNode());
         }
 
-        // then, for every Node, have it randomly point to a node further down the line
-        for (int i = 0; i < startCount-1; i++) { // -1 so we DON'T mess with the last Node
-            // neighbor down the line
-            allEdges.push_back(createEdge(i, i+1));
+        // last two nodes are special cases here:
+        // second-to-last only points to last node, and nothing else.
+        // last node finishes the graph, so it points to nothing.
 
-            // 1 to 3 random Nodes up ahead
+        // first, make it basically generate a linked list
+        for (int i = 0; i < startCount-1; i++) {
+            allEdges.push_back(createEdge(i, i+1));
+        }
+
+        // then, for every Node, have it randomly point to a node further down the line
+        for (int i = 0; i < startCount-2; i++) { // -2 so we DON'T mess with the last two Nodes
             int randoms = rand() % 3 + 1;
             vector<int> newConns;
-            for (int k = 0; k < randoms; k++) {
-                // start by generating how many numbers out this connection will go. 
-                // range is i + 2 to last node......so how does that translate?
-                int range1 = ((allNodes.size() - i - 2) != 0) ? (allNodes.size() - i - 2) : 1;
-                int range2 = rand() % range1; // this is to prevent floating point exception (0 % 0)!!!!
 
-                // then we start nextCandidate at i+2 (since we don't wanna just connect
-                // to the node in front randomly. we already did that). this should
-                // correctly create edges going forward (albeit with some repeats -- we 
-                // can add more logic here if we wanna get rid of said repition, or just
-                // brute force some way to remove all of them)
+            for (int k = 0; k < randoms; k++) {
+                bool unique = true;
+                int range1 = allNodes.size() - i - 2;
+                int range2 = (range1 != 0) ? rand() % range1 : 0;
                 int nextCandidate = i + 2 + range2;
 
-                newConns.push_back(nextCandidate); // add to newConns
-            }
+                for (auto con : newConns) {
+                    if (con == nextCandidate || nextCandidate == allNodes.size()) unique = false;
+                }
+                if (unique) newConns.push_back(nextCandidate); // add to newConns
+            } 
+
             for (int j = 0; j < newConns.size(); j++) {
                 allEdges.push_back(createEdge(i, newConns[j])); // add these edges to the DAG
             }
@@ -220,11 +232,11 @@ public:
     // creates a Node using new, with a val adaptive to alpha, and returns.
     Node * createNode() {
         if (alpha) {
-            Node * temp = new Node(everCount, intToAlphaID(everCount++));
+            Node * temp = new Node(everCount, intToAlphaID(everCount)); everCount++;
             return temp; // notice, it increments everCount here,
         }
         else {
-            Node * temp = new Node(everCount, to_string(everCount++));
+            Node * temp = new Node(everCount, to_string(everCount)); everCount++;
             return temp; // so that the next node WILL have unique ID
         }
     }
