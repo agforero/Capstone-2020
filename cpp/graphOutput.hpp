@@ -157,7 +157,7 @@ public:
             // 1 to 3 random Nodes up ahead
             int randoms = rand() % 3 + 1;
             vector<int> newConns;
-            for (int i = 0; i < randoms; i++) {
+            for (int k = 0; k < randoms; k++) {
                 // start by generating how many numbers out this connection will go. 
                 // range is i + 2 to last node......so how does that translate?
                 int range = rand() % (allNodes.size() - i - 2);
@@ -174,7 +174,7 @@ public:
             for (int j = 0; j < newConns.size(); j++) {
                 allEdges.push_back(createEdge(i, newConns[j])); // add these edges to the DAG
             }
-        } 
+        }
     }
 
     // returns an annotation value depending on adjacency to head node.

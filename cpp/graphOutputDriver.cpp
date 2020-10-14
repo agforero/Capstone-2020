@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include "graphOutput.hpp"
 
 int main(int argc, char ** argv) {
