@@ -260,36 +260,40 @@ public:
 
     // JSON output functions. you know, this would have been easier with printf(), but that's ok :)
     void dataToJSON() {
-        cout << "let Frames = [" << endl;
-        cout << "\t{" << endl;
-        cout << "\t\t\"type\": \"animation\"," << endl; // brain hurty
+        cout << "{" << endl;
+        cout << "\t\"type\": \"animation\"," << endl; // brain hurty
 
         // print all the nodes
-        cout << "\t\t\"nodes\": {" << endl;
+        cout << "\t\"nodes\": {" << endl;
         for (int i = 0; i < allNodes.size(); i++) {
-            cout << "\t\t\t\"" << allNodes[i]->getID() << "\": {" << endl;
-            cout << "\t\t\t\t\"id\": "           << allNodes[i]->getID()                             << "," << endl;
-            cout << "\t\t\t\t\"name\": \""       << allNodes[i]->getVal()                            << "\"," << endl;
-            cout << "\t\t\t\t\"position\": { "   << "\"x\": " << 50*(i+1) << ", \"y\": " << 50*(i+1) << " }," << endl;
-            cout << "\t\t\t\t\"color\": "        << vectorColor(i)                                   << "," << endl;
-            cout << "\t\t\t\t\"annotation\": "   << getAnnotation(i)                                 << "," << endl;
-            cout << "\t\t\t}," << endl;
+            cout << "\t\t\"" << allNodes[i]->getID() << "\": {" << endl;
+
+            cout << "\t\t\t\"id\": "           << allNodes[i]->getID()                             << "," << endl;
+            cout << "\t\t\t\"name\": \""       << allNodes[i]->getVal()                            << "\"," << endl;
+            cout << "\t\t\t\"position\": { "   << "\"x\": " << 50*(i+1) << ", \"y\": " << 50*(i+1) << " }," << endl;
+            cout << "\t\t\t\"color\": "        << vectorColor(i)                                   << "," << endl;
+            cout << "\t\t\t\"annotation\": "   << getAnnotation(i)                                 << endl;
+
+            if (i != allNodes.size()-1) cout << "\t\t}," << endl;
+            else cout << "\t\t}" << endl;
         }
-        cout << "\t\t}," << endl;
+        cout << "\t}," << endl;
 
         // print all the edges
-        cout << "\t\t\"edges\": {" << endl;
+        cout << "\t\"edges\": {" << endl;
         for (int i = 0; i < allEdges.size(); i++) {
-            cout << "\t\t\t\"" << allEdges[i][0] << "-" << allEdges[i][1] << "\": {" << endl;
-            cout << "\t\t\t\t\"start\": "    << allEdges[i][0]       << "," << endl;
-            cout << "\t\t\t\t\"end\": "      << allEdges[i][1]       << "," << endl;
-            cout << "\t\t\t\t\"weight\": "   << allEdges[i][2]       << "," << endl;
-            cout << "\t\t\t}," << endl;
+            cout << "\t\t\"" << allEdges[i][0] << "-" << allEdges[i][1] << "\": {" << endl;
+
+            cout << "\t\t\t\"start\": "    << allEdges[i][0]       << "," << endl;
+            cout << "\t\t\t\"end\": "      << allEdges[i][1]       << "," << endl;
+            cout << "\t\t\t\"weight\": "   << allEdges[i][2]       << endl;
+
+            if (i != allEdges.size()-1) cout << "\t\t}," << endl;
+            else cout << "\t\t}" << endl;
         }
-        cout << "\t\t}," << endl;
+        cout << "\t}" << endl;
 
         // ending everything else
-        cout << "\t}," << endl;
-        cout << "]" << endl;
+        cout << "}" << endl;
     }
 };
