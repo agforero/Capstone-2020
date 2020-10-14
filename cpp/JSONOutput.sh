@@ -6,4 +6,8 @@ if [ ! -f graphOutputDriver.exe ]; then
     fi
 fi
 
-./graphOutputDriver > graphOutput.json
+if [ $# -eq 1 ]; then
+    ./graphOutputDriver $1 > graphOutput.json
+else
+    ./graphOutputDriver > graphOutput.json
+fi

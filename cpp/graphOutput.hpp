@@ -138,8 +138,8 @@ public:
         /*
         a directed acyclic graph. this is a graph that cannot be cycled infinitely using any given path, starting 
         at any given node. thus, it has startCount nodes each with, let's say, 0 to 3 edges: but these edges cannot
-        point backwards. they can point to a node further down the line, and sometimes to themselves, but they cannot 
-        point backwards, as this might allow a cycle. can't have that. bad for business.
+        point backwards. they can point to a node further down the line, but they cannot point backwards, as this 
+        might allow a cycle. can't have that. bad for business.
 
         it should also point to its next neighbor.
         */
@@ -158,16 +158,21 @@ public:
             int randoms = rand() % 3 + 1;
             vector<int> newConns;
             for (int i = 0; i < randoms; i++) {
-                int nextCandidate = (rand() % (allNodes.size() - i - 2)) + (i + 2); // gens rand number i+1 to end
+                // start by generating how many numbers out this connection will go. 
+                // range is i + 2 to last node......so how does that translate?
+                int range = rand() % (allNodes.size() - i - 2);
+
+                // then we start nextCandidate at i+2 (since we don't wanna just connect
+                // to the node in front randomly. we already did that). this should
+                // correctly create edges going forward (albeit with some repeats -- we 
+                // can add more logic here if we wanna get rid of said repition, or just
+                // brute force some way to remove all of them)
+                int nextCandidate = i + 2 + range;
+
                 newConns.push_back(nextCandidate); // add to newConns
             }
             for (int j = 0; j < newConns.size(); j++) {
                 allEdges.push_back(createEdge(i, newConns[j])); // add these edges to the DAG
-            }
-
-            // rarely, itself
-            if (!(rand() % 20)) { // 1 in 20 chance(?)
-                allEdges.push_back(createEdge(i, i));
             }
         } 
     }
