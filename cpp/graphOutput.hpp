@@ -9,13 +9,14 @@ using namespace std;
 int itest = 0;
 #define ITEST cout << "TEST #" << itest++ << endl;
 
-// TYPE enumerator
+// TYPE ENUMERATOR ========================================================================================================================
 enum TYPE {
-    NONE,   // no type yet; just disjointed nodes
-    DAG     // directed acyclic graph
+    NONE,       // no type yet; just disjointed nodes
+    DAG,        // directed acyclic graph
+    LINKEDLIST, // a linked list. duh
 };
 
-// Node class declaration
+// NODE CLASS DECLARATION ========================================================================================================================
 class Node {
 private:
     string val;
@@ -45,58 +46,7 @@ public:
     }
 };
 
-// Helper functions
-// helps create unique alphabetical IDs for each Node.
-string intToAlphaID(int n) {
-    if (n == 0) {
-        string ret = "A";
-        return ret;
-    }
-    vector<char> letterVals;
-    for (int i = 0; i < 26; i++) {
-        char thisChar = i + 65;
-        letterVals.push_back(thisChar);
-    }
-
-    string ret = "";
-    while (n > 0) {
-        ret += letterVals[(n % 26)];
-        n /= 26; // should round down and be ok.
-    }
-    return ret;
-}
-
-// creates a Node using New, with a val adaptive to alpha, and returns.
-Node * createNode(int ID, bool alpha) {
-    if (alpha) {
-        Node * temp = new Node(ID, intToAlphaID(ID));
-        return temp;
-    }
-    else {
-        Node * temp = new Node(ID, to_string(ID));
-        return temp;
-    }
-}
-
-// creates an edge between two nodes. saves a line.
-vector<int> createEdge(int start, int stop, int weight=1) {
-    vector<int> nextEdge {start, stop, weight};
-    return nextEdge;
-}
-
-// returns a hex color, depending on whether or not i == 0.
-string vectorColor(int idx) {
-    if (idx == 0) {
-        string ret = "\"#0f0\"";
-        return ret;
-    }
-    else {
-        string ret = "\"#f00\"";
-        return ret;
-    }
-}
-
-// Graph class declaration
+// GRAPH CLASS DECLARATION ========================================================================================================================
 class Graph {
 private:
     vector<Node *> allNodes;        // vector of all nodes
@@ -106,7 +56,7 @@ private:
     int startCount = 8;             // how many Nodes to start; default 8 as per research
 
     bool directed;                  // whether or not the edges are directed
-    bool alpha = true;              // whether or not Node vals should be alphabetical, default true.
+    bool alpha = true;              // whether or not Node vals should be alphabetical. default true.
 
 public:
     // constructor
@@ -121,36 +71,34 @@ public:
                 break;
             case DAG:
                 generateDAG(); 
-                break; 
+                break;
+            case LINKEDLIST:
+                generateLINKEDLIST();
+                break;
         }
     }
 
-    // generation functions
+    // GENERATE FUNCTIONS ========================================================================================================================
+    // a bunch of disconnected nodes. none of them have edges connecting each other. pretty straightforward.
     void generateNONE() {
-        // a bunch of disconnected nodes. none of them have edges connecting each other. pretty straightforward.
-
         for (int i = 0; i < startCount; i++) {
-            allNodes.push_back(createNode(everCount++, alpha));
+            allNodes.push_back(createNode());
         }
     }
 
+    /* a directed acyclic graph. this is a graph that cannot be cycled infinitely using any given path, starting 
+    at any given node. thus, it has startCount nodes each with, let's say, 0 to 3 edges: but these edges cannot
+    point backwards. they can point to a node further down the line, but they cannot point backwards, as this 
+    might allow a cycle. can't have that. bad for business.
+
+    it should also point to its next neighbor. */
     void generateDAG() {
-        /*
-        a directed acyclic graph. this is a graph that cannot be cycled infinitely using any given path, starting 
-        at any given node. thus, it has startCount nodes each with, let's say, 0 to 3 edges: but these edges cannot
-        point backwards. they can point to a node further down the line, but they cannot point backwards, as this 
-        might allow a cycle. can't have that. bad for business.
-
-        it should also point to its next neighbor.
-        */
-
-        // start by generating all Nodes
         for (int i = 0; i < startCount; i++) {
-            allNodes.push_back(createNode(everCount++, alpha));
+            allNodes.push_back(createNode());
         }
 
-        // then, for every Node, have it randomly point to a node further down the line, and rarely to itself
-        for (int i = 0; i < allNodes.size()-1; i++) { // -1 so we DON'T mess with the last Node
+        // then, for every Node, have it randomly point to a node further down the line
+        for (int i = 0; i < startCount-1; i++) { // -1 so we DON'T mess with the last Node
             // neighbor down the line
             allEdges.push_back(createEdge(i, i+1));
 
@@ -160,20 +108,44 @@ public:
             for (int k = 0; k < randoms; k++) {
                 // start by generating how many numbers out this connection will go. 
                 // range is i + 2 to last node......so how does that translate?
-                int range = rand() % (allNodes.size() - i - 2);
+                int range1 = ((allNodes.size() - i - 2) != 0) ? (allNodes.size() - i - 2) : 1;
+                int range2 = rand() % range1; // this is to prevent floating point exception (0 % 0)!!!!
 
                 // then we start nextCandidate at i+2 (since we don't wanna just connect
                 // to the node in front randomly. we already did that). this should
                 // correctly create edges going forward (albeit with some repeats -- we 
                 // can add more logic here if we wanna get rid of said repition, or just
                 // brute force some way to remove all of them)
-                int nextCandidate = i + 2 + range;
+                int nextCandidate = i + 2 + range2;
 
                 newConns.push_back(nextCandidate); // add to newConns
             }
             for (int j = 0; j < newConns.size(); j++) {
                 allEdges.push_back(createEdge(i, newConns[j])); // add these edges to the DAG
             }
+        }
+    }
+
+    // a string of nodes, each pointing to the next one in line.
+    void generateLINKEDLIST() {
+        for (int i = 0; i < startCount; i++) {
+            allNodes.push_back(createNode());
+        }
+        for (int i = 0; i < startCount-1; i++) {
+            allEdges.push_back(createEdge(i, i+1));
+        }
+    }
+
+    // GRAPH HELPER METHODS ========================================================================================================================
+    // creates a Node using new, with a val adaptive to alpha, and returns.
+    Node * createNode() {
+        if (alpha) {
+            Node * temp = new Node(everCount, intToAlphaID(everCount++));
+            return temp; // notice, it increments everCount here,
+        }
+        else {
+            Node * temp = new Node(everCount, to_string(everCount++));
+            return temp; // so that the next node WILL have unique ID
         }
     }
 
@@ -229,3 +201,42 @@ public:
         cout << "]" << endl;
     }
 };
+
+// HELPER FUNCTIONS ========================================================================================================================
+// helps create unique alphabetical IDs for each Node.
+string intToAlphaID(int n) {
+    if (n == 0) {
+        string ret = "A";
+        return ret;
+    }
+    vector<char> letterVals;
+    for (int i = 0; i < 26; i++) {
+        char thisChar = i + 65;
+        letterVals.push_back(thisChar);
+    }
+
+    string ret = "";
+    while (n > 0) {
+        ret += letterVals[(n % 26)];
+        n /= 26; // should round down and be ok.
+    }
+    return ret;
+}
+
+// creates an edge between two nodes. saves a line.
+vector<int> createEdge(int start, int stop, int weight=1) {
+    vector<int> nextEdge {start, stop, weight};
+    return nextEdge;
+}
+
+// returns a hex color, depending on whether or not i == 0.
+string vectorColor(int idx) {
+    if (idx == 0) {
+        string ret = "\"#0f0\"";
+        return ret;
+    }
+    else {
+        string ret = "\"#f00\"";
+        return ret;
+    }
+}
