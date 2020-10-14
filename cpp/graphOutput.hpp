@@ -9,12 +9,76 @@ using namespace std;
 int itest = 0;
 #define ITEST cout << "TEST #" << itest++ << endl;
 
-// TYPE ENUMERATOR ========================================================================================================================
-enum TYPE {
-    NONE,       // no type yet; just disjointed nodes
-    DAG,        // directed acyclic graph
-    LINKEDLIST, // a linked list. duh
-};
+// HELPER FUNCTIONS ========================================================================================================================
+// helps create unique alphabetical IDs for each Node.
+string intToAlphaID(int n) {
+    if (n == 0) {
+        string ret = "A";
+        return ret;
+    }
+    vector<char> letterVals;
+    for (int i = 0; i < 26; i++) {
+        char thisChar = i + 65;
+        letterVals.push_back(thisChar);
+    }
+
+    string ret = "";
+    while (n > 0) {
+        ret += letterVals[(n % 26)];
+        n /= 26; // should round down and be ok.
+    }
+    return ret;
+}
+
+// creates an edge between two nodes. saves a line.
+vector<int> createEdge(int start, int stop, int weight=1) {
+    vector<int> nextEdge {start, stop, weight};
+    return nextEdge;
+}
+
+// returns a hex color, depending on whether or not i == 0.
+string vectorColor(int idx) {
+    if (idx == 0) {
+        string ret = "\"#0f0\"";
+        return ret;
+    }
+    else {
+        string ret = "\"#f00\"";
+        return ret;
+    }
+}
+
+// just...you know. prints an error message.
+void printInvalidArgs() {
+    cout << "invalid argument(s)." << endl;
+}
+
+// gets next command line arg from this flag; or, if it doesn't exist, throws an error 
+int getFlagArg(int argc, char ** argv, string flag) {
+    for (int i = 1; i < argc-2; i++) { // skip executable and last arg
+        if (flag.compare(argv[i]) && argv[i][0] != '-') {
+            return atoi(argv[i+1]); // shouldn't be a flag.
+        }
+    }
+    // at this point, we've encountered an error. we can exit(0) immediately
+    printInvalidArgs(); exit(0); return -1; // added a return to silence g++
+}
+
+void printHelp() { // by God, is there a better way to do this? perhaps.
+    cout << "usage: ./graphOutputDriver graphType (flags)" << endl;
+    cout << endl;
+    cout << "graphType values:" << endl;
+    cout << "0: none (a bunch of disconnected nodes)" << endl;
+    cout << "1: directed acyclic graph" << endl;
+    cout << "2: linked list, directed" << endl;
+    cout << endl;
+    cout << "optional flags available:" << endl;
+    cout << "-nodes <n>\tforce the creation of n nodes in the graph. default 8." << endl;
+    cout << "-rn <n>\t\trandomize the node vals to be between 1 and n. default False." << endl;
+    cout << "-re <n>\t\trandomize the edge weights to be integers between 1 and n. by default, n is 5. irrelevant for unweighted graphs." << endl;
+    cout << endl;
+    cout << "run ./graphOutputDriver -h or ./graphOutputDriver --help to display this help menu." << endl;
+}
 
 // NODE CLASS DECLARATION ========================================================================================================================
 class Node {
@@ -54,25 +118,41 @@ private:
 
     int everCount = 0;              // how many Nodes have ever existed; helps with creating unique IDs
     int startCount = 8;             // how many Nodes to start; default 8 as per research
+    int t = 0;                      // what type of graph this is. default none, aka 0
 
     bool directed;                  // whether or not the edges are directed
     bool alpha = true;              // whether or not Node vals should be alphabetical. default true.
 
 public:
     // constructor
-    Graph(TYPE t=NONE, int s=8, bool a=true) {
+    Graph(int argc, char ** argv) {
+        // reroll random rolls so the rolls are random
         srand(time(NULL)); 
-        startCount = s; 
-        alpha = a; 
+        
+        // sift through args; see if we need to override defaults
+        // see if we can't start by extrapolating graph type
+        if (argc >= 2) {
+            t = atoi(argv[1]); // should return 0 if nothing else...bug proof??
+        }
 
-        switch(t) {
-            case NONE:
+        for (int i = 2; i < argc-1; i++) { // skip executable name and graph type
+            string argToString = argv[i];
+            if (argToString.compare("-h") == 0 || argToString.compare("--help") == 0) {
+                printHelp(); exit(0); // terminate 
+            }
+            else if (argToString.compare("-nodes") == 0) {
+                startCount = getFlagArg(argc, argv, "-nodes");
+            }
+        }
+
+        switch (t) {
+            case 0:
                 generateNONE();
                 break;
-            case DAG:
+            case 1:
                 generateDAG(); 
                 break;
-            case LINKEDLIST:
+            case 2:
                 generateLINKEDLIST();
                 break;
         }
@@ -201,42 +281,3 @@ public:
         cout << "]" << endl;
     }
 };
-
-// HELPER FUNCTIONS ========================================================================================================================
-// helps create unique alphabetical IDs for each Node.
-string intToAlphaID(int n) {
-    if (n == 0) {
-        string ret = "A";
-        return ret;
-    }
-    vector<char> letterVals;
-    for (int i = 0; i < 26; i++) {
-        char thisChar = i + 65;
-        letterVals.push_back(thisChar);
-    }
-
-    string ret = "";
-    while (n > 0) {
-        ret += letterVals[(n % 26)];
-        n /= 26; // should round down and be ok.
-    }
-    return ret;
-}
-
-// creates an edge between two nodes. saves a line.
-vector<int> createEdge(int start, int stop, int weight=1) {
-    vector<int> nextEdge {start, stop, weight};
-    return nextEdge;
-}
-
-// returns a hex color, depending on whether or not i == 0.
-string vectorColor(int idx) {
-    if (idx == 0) {
-        string ret = "\"#0f0\"";
-        return ret;
-    }
-    else {
-        string ret = "\"#f00\"";
-        return ret;
-    }
-}
