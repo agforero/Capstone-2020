@@ -270,7 +270,7 @@ public:
 
             cout << "\t\t\t\"id\": "           << allNodes[i]->getID()                             << "," << endl;
             cout << "\t\t\t\"name\": \""       << allNodes[i]->getVal()                            << "\"," << endl;
-            cout << "\t\t\t\"position\": { "   << "\"x\": " << 50*(i+1) << ", \"y\": " << 50*(i+1) << " }," << endl;
+            cout << "\t\t\t\"position\": { "   << "\"x\": " << (rand() % 490 + 10) << ", \"y\": " << (rand() % 490 + 10) << " }," << endl;
             cout << "\t\t\t\"color\": "        << vectorColor(i)                                   << "," << endl;
             cout << "\t\t\t\"annotation\": "   << getAnnotation(i)                                 << endl;
 
