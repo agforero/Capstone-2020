@@ -2,6 +2,7 @@
 #include <string>
 #include <string.h>
 #include <vector>
+#include <queue>
 #include <stdlib.h>
 #include <time.h>
 #include <algorithm>
@@ -29,12 +30,6 @@ string intToAlphaID(int n) {
         n /= 26; // should round down and be ok.
     }
     return ret;
-}
-
-// creates an edge between two nodes. saves a line.
-vector<int> createEdge(int start, int stop, int weight=1) {
-    vector<int> nextEdge {start, stop, weight};
-    return nextEdge;
 }
 
 // returns a hex color, depending on whether or not i == 0.
@@ -72,11 +67,13 @@ void printHelp() { // by God, is there a better way to do this? perhaps.
     cout << "0: none" << endl;
     cout << "1: directed acyclic graph" << endl;
     cout << "2: linked list" << endl;
+    cout << "3: tree" << endl;
     cout << endl;
     cout << "optional flags available:" << endl;
     cout << "-nodes <n>\tforce the creation of n nodes in the graph. default 8." << endl;
-    cout << "-rn <n>\t\trandomize the node vals to be between 1 and n. default False." << endl;
-    cout << "-re <n>\t\trandomize the edge weights to be integers between 1 and n. by default, n is 5. irrelevant for unweighted graphs." << endl;
+    cout << "-v <n>\t\trandomize the node vals to be between 1 and n. default False." << endl;
+    cout << "-w <n>\t\trandomize the edge weights to be integers between 1 and n. by default, n is 1, implying weightlessness." << endl;
+    cout << "-v <n>\t\tedit variability; nodes will now randomly have between 1 and n edges stemming from them. works best with high node counts." << endl;
     cout << endl;
     cout << "run ./graphOutputDriver -h or ./graphOutputDriver --help to display this help menu." << endl;
 }
@@ -119,9 +116,11 @@ private:
 
     int everCount = 0;              // how many Nodes have ever existed; helps with creating unique IDs
     int startCount = 8;             // how many Nodes to start; default 8 as per research
+    int variability = 3;            // in a graph with random edge counts per node, this is highest possible edge count.
+    int weight = 1;                 // default weight to put on edges. starts at 1, which basically means weightless
     int t = 0;                      // what type of graph this is. default none, aka 0
 
-    bool directed;                  // whether or not the edges are directed
+    bool directed = false;          // whether or not the edges are directed
     bool alpha = true;              // whether or not Node vals should be alphabetical. default true.
 
 public:
@@ -152,6 +151,12 @@ public:
             else if (strcmp(argv[i], "-nodes") == 0) {
                 startCount = getFlagArg(argc, argv, "-nodes");
             }
+            else if (strcmp(argv[i], "-w") == 0) {
+                weight = getFlagArg(argc, argv, "-w");
+            }
+            else if (strcmp(argv[i], "-v") == 0) {
+                variability = getFlagArg(argc, argv, "-v");
+            }
         }
 
         switch (t) {
@@ -163,6 +168,9 @@ public:
                 break;
             case 2:
                 generateLINKEDLIST();
+                break;
+            case 3:
+                generateTREE();
                 break;
         }
     }
@@ -228,6 +236,37 @@ public:
         }
     }
 
+    /* a tree with anywhere between 1 to 3 connections per node per layer before continuing.
+    this works a lot better with longer node counts, like 16. */
+    void generateTREE() {
+        for (int i = 0; i < startCount; i++) {
+            allNodes.push_back(createNode());
+        }
+
+        vector<int> currentLayer { 0 };
+        vector<int> nextLayer;
+
+        queue<int> availableNodes;
+        for (int i = 1; i < startCount; i++) {
+            availableNodes.push(i);
+        }
+
+        while (!currentLayer.empty()) {
+            for (int i = 0; i < currentLayer.size(); i++) {
+                int children = rand() % variability + 1;
+                for (int j = 0; j < children; j++) {
+                    if (availableNodes.empty()) break;
+                    allEdges.push_back(createEdge(currentLayer[i], availableNodes.front()));
+                    nextLayer.push_back(availableNodes.front());
+                    availableNodes.pop();
+                }
+            }
+            vector<int> emptyVector;
+            currentLayer = nextLayer;
+            nextLayer = emptyVector;
+        }
+    }
+
     // GRAPH HELPER METHODS ========================================================================================================================
     // creates a Node using new, with a val adaptive to alpha, and returns.
     Node * createNode() {
@@ -239,6 +278,12 @@ public:
             Node * temp = new Node(everCount, to_string(everCount)); everCount++;
             return temp; // so that the next node WILL have unique ID
         }
+    }
+
+    // creates an edge between two nodes. saves a line.
+    vector<int> createEdge(int start, int stop) {
+        vector<int> nextEdge {start, stop, (rand() % weight + 1)};
+        return nextEdge;
     }
 
     // returns an annotation value depending on adjacency to head node.
