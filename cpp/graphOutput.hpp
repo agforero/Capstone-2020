@@ -236,7 +236,7 @@ public:
         }
     }
 
-    /* a tree with anywhere between 1 to 3 connections per node per layer before continuing.
+    /* a tree with anywhere between 1 to variability connections per node per layer before continuing.
     this works a lot better with longer node counts, like 16. */
     void generateTREE() {
         for (int i = 0; i < startCount; i++) {
