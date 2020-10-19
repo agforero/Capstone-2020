@@ -82,6 +82,7 @@ void printHelp() { // by God, is there a better way to do this? perhaps.
 class Node {
 private:
     string val;
+    vector<int> position {};
     int ID;
 
 public:
@@ -101,10 +102,16 @@ public:
     int getID() {
         return ID;
     }
+    vector<int> getPosition() {
+        return position;
+    }
 
     // setters
     void setVal(string s) {
         val = s;
+    }
+    void setPosition(int x, int y) {
+        position = {x, y};
     }
 };
 
@@ -180,6 +187,7 @@ public:
     void generateNONE() {
         for (int i = 0; i < startCount; i++) {
             allNodes.push_back(createNode());
+            allNodes[i]->setPosition(((i+1)*50),((i+1)*50));
         }
     }
 
@@ -201,6 +209,7 @@ public:
         // first, make it basically generate a linked list
         for (int i = 0; i < startCount-1; i++) {
             allEdges.push_back(createEdge(i, i+1));
+            allNodes[i]->setPosition(((i+1)*50),((i+1)*50)); // we'll need curved arrows or something for this
         }
 
         // then, for every Node, have it randomly point to a node further down the line
@@ -234,8 +243,12 @@ public:
         for (int i = 0; i < startCount-1; i++) {
             allEdges.push_back(createEdge(i, i+1));
         }
+        
+        // setting positions
+        for (int i = 0; i < startCount; i++) {
+            allNodes[i]->setPosition((i+1)*50, (i+1)*50);
+        }
     }
-
     /* a tree with anywhere between 1 to variability connections per node per layer before continuing.
     this works a lot better with longer node counts, like 16. */
     void generateTREE() {
@@ -243,8 +256,11 @@ public:
             allNodes.push_back(createNode());
         }
 
-        vector<int> currentLayer { 0 };
+        vector<int> currentLayer {0};
         vector<int> nextLayer;
+        int depth = 1;
+        int width = 500;
+        int nodesPlaced = 0; // keeps track of how many nodes we've positioned so far
 
         queue<int> availableNodes;
         for (int i = 1; i < startCount; i++) {
@@ -252,6 +268,14 @@ public:
         }
 
         while (!currentLayer.empty()) {
+            // set positions for each node in current layer
+            // we will assume width of div is 500 for now; we can tune this later if need be. see above for width
+            int spacing = width / (currentLayer.size()+1); // there will be this many px between each node.
+            for (int i = 0; i < currentLayer.size(); i++) {
+                allNodes[nodesPlaced++]->setPosition(((i+1)*spacing), (depth*20));
+            }
+            depth++;
+
             for (int i = 0; i < currentLayer.size(); i++) {
                 int children = rand() % variability + 1;
                 for (int j = 0; j < children; j++) {
@@ -311,11 +335,13 @@ public:
         // print all the nodes
         cout << "\t\"nodes\": {" << endl;
         for (int i = 0; i < allNodes.size(); i++) {
+            int x = allNodes[i]->getPosition()[0]; int y = allNodes[i]->getPosition()[1];
+
             cout << "\t\t\"" << allNodes[i]->getID() << "\": {" << endl;
 
             cout << "\t\t\t\"id\": "           << allNodes[i]->getID()                             << "," << endl;
             cout << "\t\t\t\"name\": \""       << allNodes[i]->getVal()                            << "\"," << endl;
-            cout << "\t\t\t\"position\": { "   << "\"x\": " << (rand() % 490 + 10) << ", \"y\": " << (rand() % 490 + 10) << " }," << endl;
+            cout << "\t\t\t\"position\": { "   << "\"x\": " << x << ", \"y\": " << y               << " }," << endl;
             cout << "\t\t\t\"color\": "        << vectorColor(i)                                   << "," << endl;
             cout << "\t\t\t\"annotation\": "   << getAnnotation(i)                                 << endl;
 
