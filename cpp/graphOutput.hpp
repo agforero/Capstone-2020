@@ -68,14 +68,20 @@ void printHelp() { // by God, is there a better way to do this? perhaps.
     cout << "1: directed acyclic graph" << endl;
     cout << "2: linked list" << endl;
     cout << "3: tree" << endl;
+    cout << "4: grid" << endl;
     cout << endl;
     cout << "optional flags available:" << endl;
+    cout << "-i\t\tname nodes using integers rather than letters." << endl;
     cout << "-nodes <n>\tforce the creation of n nodes in the graph. default 8." << endl;
-    cout << "-v <n>\t\trandomize the node vals to be between 1 and n. default False." << endl;
     cout << "-w <n>\t\trandomize the edge weights to be integers between 1 and n. by default, n is 1, implying weightlessness." << endl;
-    cout << "-v <n>\t\tedit variability; nodes will now randomly have between 1 and n edges stemming from them. works best with high node counts." << endl;
+    cout << "-v <n>\t\tedit variability; nodes have between 2 and n edges stemming from them. default n is 4. works best with high node counts." << endl;
+    cout << "-g <n>\t\tgrid width; in a grid, how many nodes wide it is." << endl;
     cout << endl;
     cout << "run ./graphOutputDriver -h or ./graphOutputDriver --help to display this help menu." << endl;
+}
+
+int getRemainder(int n, int d) {
+    
 }
 
 // NODE CLASS DECLARATION ========================================================================================================================
@@ -123,8 +129,9 @@ private:
 
     int everCount = 0;              // how many Nodes have ever existed; helps with creating unique IDs
     int startCount = 8;             // how many Nodes to start; default 8 as per research
-    int variability = 3;            // in a graph with random edge counts per node, this is highest possible edge count.
+    int variability = 4;            // in a graph with random edge counts per node, this is highest possible edge count.
     int weight = 1;                 // default weight to put on edges. starts at 1, which basically means weightless
+    int gridWidth = 4;              // grid is default 4 nodes wide.
     int t = 0;                      // what type of graph this is. default none, aka 0
 
     bool directed = false;          // whether or not the edges are directed
@@ -164,6 +171,9 @@ public:
             else if (strcmp(argv[i], "-v") == 0) {
                 variability = getFlagArg(argc, argv, "-v");
             }
+            else if (strcmp(argv[i], "-i") == 0) {
+                alpha = false;
+            }
         }
 
         switch (t) {
@@ -179,6 +189,8 @@ public:
             case 3:
                 generateTREE();
                 break;
+            case 4:
+                generateGRID();
         }
     }
 
@@ -277,7 +289,7 @@ public:
             depth++;
 
             for (int i = 0; i < currentLayer.size(); i++) {
-                int children = rand() % variability + 1;
+                int children = rand() % variability + 2;
                 for (int j = 0; j < children; j++) {
                     if (availableNodes.empty()) break;
                     allEdges.push_back(createEdge(currentLayer[i], availableNodes.front()));
@@ -288,6 +300,14 @@ public:
             vector<int> emptyVector;
             currentLayer = nextLayer;
             nextLayer = emptyVector;
+        }
+    }
+
+    void generateGRID() {
+        int currentRow = 1;
+        for (int i = 0; i < startCount; i++) {
+            allNodes.push_back(createNode());
+            allNodes[i]->setPosition()
         }
     }
 
