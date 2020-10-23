@@ -80,10 +80,6 @@ void printHelp() { // by God, is there a better way to do this? perhaps.
     cout << "run ./graphOutputDriver -h or ./graphOutputDriver --help to display this help menu." << endl;
 }
 
-int getRemainder(int n, int d) {
-    
-}
-
 // NODE CLASS DECLARATION ========================================================================================================================
 class Node {
 private:
@@ -307,7 +303,7 @@ public:
         int currentRow = 1;
         for (int i = 0; i < startCount; i++) {
             allNodes.push_back(createNode());
-            allNodes[i]->setPosition()
+            allNodes[i]->setPosition(((gridWidth / i) + (gridWidth % i)) * 50, ((gridWidth / i) + 1) * 20);
         }
     }
 
