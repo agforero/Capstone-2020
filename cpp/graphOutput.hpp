@@ -300,10 +300,11 @@ public:
     }
 
     void generateGRID() {
-        int currentRow = 1;
+        int currentColumn = 1; 
         for (int i = 0; i < startCount; i++) {
             allNodes.push_back(createNode());
-            allNodes[i]->setPosition(((gridWidth / i) + (gridWidth % i)) * 50, ((gridWidth / i) + 1) * 20);
+            allNodes[i]->setPosition(50 * currentColumn++, ((i / gridWidth) + 1) * 20);
+            if (currentColumn > gridWidth) currentColumn = 1;
         }
     }
 
