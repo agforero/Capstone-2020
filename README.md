@@ -1,3 +1,5 @@
 # Graph Shared Repo
 
-Shared repo for Nick, Rob and Agustin.
+![logo](frontend/src/images/Logo.png)
+
+Repo containing my senior year Capstone project at St. Olaf College.
