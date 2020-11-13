@@ -97,7 +97,7 @@ let MockFrame = {
 				1,
 				2
 			],
-			"color": "#0f0",
+			"color": "#00a600",
 			"dashBorder": false
 		}
 	]

@@ -7,7 +7,7 @@ let Frames = [
 				"id": 0, // are the id's really needed? when would you have access to this without knowing the key used to access it in the object?
 				"name": "A",
 				"position": { "x": 50, "y": 50 },
-				"color": "#0f0",
+				"color": "#00a600",
 				"annotation":"0",
 			},
 			"1": {
@@ -74,14 +74,14 @@ let Frames = [
 				"id": 0, // are the id's really needed? when would you have access to this without knowing the key used to access it in the object?
 				"name": "A",
 				"position": { "x": 50, "y": 50 },
-				"color": "#0f0",
+				"color": "#00a600",
 				"annotation":"0",
 			},
 			"1": {
 				"id": 1,
 				"name": "B",
 				"position": { "x": 150, "y": 50 },
-				"color": "#0f0",
+				"color": "#00a600",
 				"annotation":"1",
 			},
 			"2": {

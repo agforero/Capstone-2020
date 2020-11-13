@@ -40,6 +40,9 @@ class GraphEdge extends React.Component {
 		let pointsString = "0 0, " + arrowSize * 2 + " " + arrowSize + ", 0 " + arrowSize * 2;
 
 		let color = "#000";
+		if (this.props.highlight) {
+			color = "#f0f";
+		}
 		if (this.props.changed != null) {
 			if (this.props.changed.color != null) {
 				color = this.props.changed.color;
@@ -63,6 +66,8 @@ class GraphEdge extends React.Component {
 		let endX = this.props.end.x - (xOffset * (this.props.start.x <= this.props.end.x ? 1 : -1));
 		let endY = this.props.end.y - (yOffset * (this.props.start.x <= this.props.end.x ? 1 : -1));
 
+		let strokeWidth = ["dijkstra_highlightPath"].includes(this.props.question) ? 3.5 : 2.5
+
 		return <g>
 			<defs>
 				<marker id="arrowhead" markerWidth="10" markerHeight="7"
@@ -77,7 +82,7 @@ class GraphEdge extends React.Component {
 				y2={endY}
 				style={{
 					stroke: color,
-					strokeWidth: 3,
+					strokeWidth: strokeWidth,
 					cursor: "pointer",
 				}}
 				markerEnd="url(#arrowhead)"
@@ -92,7 +97,7 @@ class GraphEdge extends React.Component {
 				style={{
 					font: "12px sans-serif",
 				}}
-				fill="#000"
+				fill={this.props.color === null ? "#000" : this.props.color}
 			>
 				{this.props.weight}
 			</text>

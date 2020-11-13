@@ -38,7 +38,7 @@ class Edges {
 }
 
 class Group {
-	constructor(nodes = [], color = "#0f0") {
+	constructor(nodes = [], color = "#00a600") {
 		this.members = nodes;
 		this.color = color;
 		this.dashBorder = false;

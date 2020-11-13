@@ -19,6 +19,8 @@ const { exit } = require('process');
 const { json } = require('express');
 const util = require('util');
 
+// TODO: show them a report at the end
+
 // ---------- Consts ----------
 const EXPECTED_USERS = 2; // Sent to this page from another, this is how many were in the graph creation page
 
@@ -30,8 +32,8 @@ var clickerIndex = null; // Index in users of the Clicker
 var expectedAnswer = null; // Will be filled with an object that represents the correct answer to pop quizzes
 
 // ---------- Setup Code ----------
-// TODO: call C++ things to generate it
-const dataFile = 'data/dijkstra_complete.json';
+// maybe todo: call C++ things to generate it
+const dataFile = '../data/tutorial.json';
 
 // ---------- Start Server ----------
 // Add ability to serve the "build" directory
@@ -74,7 +76,12 @@ io.on('connection', (socket) => {
 
 	socket.on('request_animation_start', () => {
 		if (users.length >= EXPECTED_USERS) {
-			selectClicker();
+			if (EXPECTED_USERS == 1) {
+				clickerIndex = 0;
+				io.emit('new_clicker_index', 0);
+			} else {
+				selectClicker();
+			}
 			startAnimation();
 		}
 	});
@@ -104,6 +111,7 @@ io.on('connection', (socket) => {
 			case "popQuiz_Answer":
 				expectedAnswer = nextItem.answer;
 				// Ask question
+				console.log("Pop quiz!: " + frames[frameCount].text);
 				io.emit('pop_quiz_question', frames[frameCount++]);
 				break;
 			default:
@@ -112,6 +120,7 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('add_doodle', (doodle) => {
+		console.log("(user doodle)");
 		// Forward to all other users
 		socket.broadcast.emit('forward_doodle', doodle);
 	});
@@ -121,6 +130,7 @@ io.on('connection', (socket) => {
 			// Not the clicker, ignore the spam
 			return;
 		}
+		console.log("Clicker made a change to the answer");
 		socket.broadcast.emit('made_change', change);
 	});
 
@@ -137,6 +147,10 @@ io.on('connection', (socket) => {
 			console.log("correct!")
 			io.emit('pop_quiz_grade_correct');
 		} else {
+			console.log("incorrect. Expected:");
+			print(expectedAnswer);
+			console.log("but got:");
+			print(changes);
 			io.emit('pop_quiz_grade_incorrect');
 			//console.log("incorrect!");
 			//console.log("expected:");
@@ -157,6 +171,7 @@ http.listen(8888, () => {
 // ---------- Helper Funcs ----------
 
 function startAnimation() {
+	console.log("Starting animation");
 	io.emit('ready_to_start');
 	fs.readFile(dataFile, 'utf8', (err, data) => {
 		if (err) {
@@ -180,9 +195,14 @@ function selectClicker() {
 	let newClickerIndex = null;
 	do {
 		newClickerIndex = Math.floor(Math.random() * users.length);
-	} while (newClickerIndex == null || users[newClickerIndex] == null || (newClickerIndex === oldClickerIndex));
+	} while (
+		newClickerIndex == null ||
+		users[newClickerIndex] == null ||
+		(newClickerIndex === oldClickerIndex
+		));
 	clickerIndex = newClickerIndex;
 	io.emit('new_clicker', newClickerIndex);
+	console.log("new clicker: user " + newClickerIndex)
 }
 
 // Delete all {} from object
@@ -257,4 +277,8 @@ function gradeAnswer(object1, object2) {
 	}
 
 	return true;
+}
+
+function print(obj, depth = null) {
+	console.log(util.inspect(obj, { depth: depth }))
 }

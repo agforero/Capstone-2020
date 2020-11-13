@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Doodle from './Doodle';
 import '../styles/graph.css';
 import GraphEdge from './GraphEdge';
@@ -12,23 +13,32 @@ class Graph extends React.Component {
 		super(props);
 		this.state = {
 			doodling: false,
-			resetDoodles: this.props.resetDoodles,
+			resetDoodles: this.props.resetDoodles, // Bool that toggles between true and false whenever it has to reset the user's doodles
+			offset: { x: 0, y: 0 }, // Offset of the <svg> element on the screen
 		};
 
-		this.doodles = []; // TODO: bool from parent to reset doodles?
+		this.doodles = [];
+		this.myRef = React.createRef();
 
 		// Needed so these functions all know what "this" means
 		this.handleMouse = this.handleMouse.bind(this);
 		this.evalDoodle = this.evalDoodle.bind(this);
 	}
 
+	componentDidMount() {
+		// maybe todo: this works fine like this, but can't handle scrolling at all...
+		let rect = ReactDOM.findDOMNode(this).getBoundingClientRect();
+		console.log(rect);
+		this.setState({ offset: { x: rect["x"], y: rect["y"] } })
+	}
+
 	handleMouse(event) {
-		// TODO: only allow during questions??
+		// Possile design change: only allow during questions?
 		/*if (this.props.question == null) {
 			return;
 		}*/
-		let x = event.clientX;
-		let y = event.clientY;
+		let x = event.clientX - this.state.offset.x;
+		let y = event.clientY - this.state.offset.y;
 		switch (event.type) {
 			case "mousemove":
 				if (this.state.doodling) {
@@ -71,6 +81,7 @@ class Graph extends React.Component {
 				});
 				break;
 			case "mouseup":
+				// It'd be cool to smooth these out one day and get rid of straight lines so they take up less points, right now these things are way too big of data pieces to be sent across the network so much
 				let thisDoodle = this.doodles[this.doodles.length - 1];
 				this.setState({ doodling: false });
 				this.props.addDoodle(thisDoodle);
@@ -118,10 +129,6 @@ class Graph extends React.Component {
 		if (this.props.frame == null) {
 			return null;
 		}
-		// TODO: figure out how to reset doodles
-		/*if (this.props.question == null) {
-			this.doodles = [];
-		}*/
 		let edges = [];
 		for (const key in this.props.frame.edges) {
 			let edge = this.props.frame.edges[key];
@@ -142,6 +149,7 @@ class Graph extends React.Component {
 				greyedOut={edge.greyedOut}
 				color={edge.color}
 				thick={edge.thick}
+				highlight={edge.highlight}
 
 				question={this.props.question}
 				addChange={this.props.addChange}
@@ -158,6 +166,7 @@ class Graph extends React.Component {
 				name={node.name}
 				position={node.position}
 				texture={node.texture}
+				bold={node.bold}
 				color={node.color}
 				shape={node.shape}
 				annotation={node.annotation}
@@ -182,18 +191,62 @@ class Graph extends React.Component {
 			count++;
 		}
 
+		let stack = null;
+		if (this.props.frame.stack != null) {
+			let stackNodes = [];
+			let boxDim = 50; // px height and width of box for stack elements
+			let currX = this.props.width - boxDim
+			let currY = this.props.height - boxDim;
+			for (let i = this.props.frame.stack.length - 1; i >= 0; i--) {
+				let stackNode = this.props.frame.stack[i];
+				stackNodes.push(
+					<g>
+						<rect
+							x={currX}
+							y={currY}
+							height={boxDim-20}
+							width={boxDim}
+							fill="none" stroke="#000" strokeWidth="2"
+						></rect>
+						<text
+							x={currX + 7}
+							y={currY + 19}
+							fontFamily="Courier New"
+						>{stackNode}</text>
+					</g>
+				);
+				currY -= 30 + 3;
+			}
+			stack = <g>
+				<text
+					x={currX}
+					y={currY + 19}
+				>up next:</text>
+				{stackNodes}
+			</g>
+		}
+
+		// TODO: magnify SVG???
+
 		return (
 			<div
+				id="graph-window"
 				onMouseMove={this.handleMouse}
 				onMouseDown={this.handleMouse}
 				onMouseUp={this.handleMouse}
 				margin="0px"
 				padding="0px"
 			>
-				<svg width="500" height="300">
+				<svg
+					id="graph-svg"
+					ref="graph-svg"
+					width={this.props.width}
+					height={this.props.height}
+				>
 					{edges}
 					{nodes}
 					{doodles}
+					{stack}
 				</svg>
 			</div>
 		)

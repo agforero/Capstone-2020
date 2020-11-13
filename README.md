@@ -1,3 +1,3 @@
-# Capstone-2020
+# Graph Shared Repo
 
-Work done for my senior year capstone project, a graph traversal algorithms learning tool.
+Shared repo for Nick, Rob and Agustin.

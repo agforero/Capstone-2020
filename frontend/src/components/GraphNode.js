@@ -1,4 +1,5 @@
 import React from 'react';
+import monky from '../images/monky.jpg';
 
 //import Textures from '../constants/Textures';
 //import Shapes from '../constants/Shapes';
@@ -36,7 +37,7 @@ class GraphNode extends React.Component {
 						}
 					});
 				} else {
-					// TODO: this.props.addChange() whatever it sent over last time to undo the change
+					// maybe todo: this.props.addChange() whatever it sent over last time to undo the change
 				}
 				break;
 			case "dijkstra_highlightPath":
@@ -60,12 +61,30 @@ class GraphNode extends React.Component {
 		}
 
 		return <g>
+			{/*monky
+			<image
+				href={monky}
+				x={this.props.position.x-15}
+				y={this.props.position.y-15}
+				height="30"
+				width="30"
+			/>
+			<rect
+				x={this.props.position.x-15}
+				y={this.props.position.y-15}
+				height="30"
+				width="30"
+				stroke={color}
+				strokeWidth="3"
+				fill="none"
+			/>
+			*/}
 			<circle
 				cx={this.props.position.x}
 				cy={this.props.position.y}
 				stroke={color}
 				r="10"
-				strokeWidth="4"
+				strokeWidth={this.props.bold ? "5" : "3"}
 				fill="white"
 			/>
 			<text

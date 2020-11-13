@@ -1,4 +1,4 @@
-#include "graphOutputHeader.hpp"
+#include "graphMainHeader.hpp"
 
 // a bunch of disconnected nodes. none of them have edges connecting each other. pretty straightforward.
 void Graph::generateNONE() {
@@ -22,8 +22,8 @@ void Graph::generateDAG() {
     // last node finishes the graph, so it points to nothing.
 
     // first, make it basically generate a linked list
-    for (int i = 0; i < startCount - 1; i++) {
-        allEdges.push_back(createEdge(i, i + 1));
+    for (int i = 0; i < startCount; i++) {
+        if (i < startCount - 1) allEdges.push_back(createEdge(i, i + 1)); // don't add edge past last node
         allNodes[i]->setPosition(((i + 1) * 50), ((i + 1) * 50)); // we'll need curved arrows or something for this
     }
 
@@ -145,4 +145,6 @@ void Graph::generateGRID() {
             }
         }
     }
+
+    if (!cyclesOK) cleanupEdges();
 }

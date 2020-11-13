@@ -1,6 +1,7 @@
 [
 	{
 		"type": "animation",
+		"currentLine": 7,
 		"nodes": {
 			"0": {
 				"id": 0,
@@ -106,10 +107,16 @@
 				"end": 5,
 				"weight": 2
 			}
-		}
+		},
+		"stack": [
+			"B",
+			"D",
+			"E"
+		]
 	},
 	{
 		"type": "animation",
+		"currentLine": 7,
 		"nodes": {
 			"0": {
 				"id": 0,
@@ -215,7 +222,13 @@
 				"end": 5,
 				"weight": 2
 			}
-		}
+		},
+		"stack": [
+			"D",
+			"E",
+			"C",
+			"F"
+		]
 	},
 	{
 		"type": "popQuiz_Answer",
@@ -240,6 +253,7 @@
 	},
 	{
 		"type": "animation",
+		"currentLine": 7,
 		"nodes": {
 			"0": {
 				"id": 0,
@@ -345,7 +359,12 @@
 				"end": 5,
 				"weight": 2
 			}
-		}
+		},
+		"stack": [
+			"E",
+			"C",
+			"F"
+		]
 	},
 	{
 		"type": "popQuiz_Answer",
@@ -368,6 +387,7 @@
 	},
 	{
 		"type": "animation",
+		"currentLine": 7,
 		"nodes": {
 			"0": {
 				"id": 0,
@@ -473,10 +493,15 @@
 				"end": 5,
 				"weight": 2
 			}
-		}
+		},
+		"stack": [
+			"C",
+			"F"
+		]
 	},
 	{
 		"type": "animation",
+		"currentLine": 7,
 		"nodes": {
 			"0": {
 				"id": 0,
@@ -582,10 +607,14 @@
 				"end": 5,
 				"weight": 2
 			}
-		}
+		},
+		"stack": [
+			"F"
+		]
 	},
 	{
 		"type": "animation",
+		"currentLine": 7,
 		"nodes": {
 			"0": {
 				"id": 0,
@@ -691,7 +720,8 @@
 				"end": 5,
 				"weight": 2
 			}
-		}
+		},
+		"stack": []
 	},
 	{
 		"type": "end"

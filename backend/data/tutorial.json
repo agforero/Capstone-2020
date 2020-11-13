@@ -1,0 +1,268 @@
+[
+{
+	"type": "animation",
+	"currentLine": 7,
+	"nodes": {
+		"0": {
+			"id": 0,
+			"name": "A",
+			"position": {
+				"x": 50,
+				"y": 50
+			},
+			"color": "#00a600",
+			"annotation": "0",
+			"bold": true
+		},
+		"1": {
+			"id": 1,
+			"name": "B",
+			"position": {
+				"x": 100,
+				"y": 50
+			},
+			"color": "#f00",
+			"annotation": "inf?",
+			"bold": false
+		}
+	},
+	"edges": {
+		"0-1": {
+			"id": "0-1",
+			"start": 0,
+			"end": 1,
+			"weight": 1,
+			"highlight": false
+		}
+	},
+		"stack": [
+		]
+},
+{
+	"type": "popQuiz_Answer",
+	"answer": {
+		"edges": {
+			"0-1": {
+				"color": "blue"
+			}
+		}
+	}
+},
+{
+	"type": "popQuiz_Question",
+	"text": "Highlight a path from one node to the other by clicking on the edge that connects them. Highlight the path between A and B.",
+	"question": "dijkstra_highlightPath"
+},
+{
+	"type": "popQuiz_Answer",
+	"answer": {
+		"nodes": {
+			"1": {
+				"annotation": "1?"
+			}
+		}
+	}
+},
+{
+	"type": "popQuiz_Question",
+	"text": "Update node distances by clicking the red text to the top right of the node. This one should say \"1?\". The 1 comes from its total distance from node A, and the question mark is there because we haven't explored from it, so we can't say for sure that it's the shortest path yet.",
+	"question": "dijkstra_updateNeighbors"
+},
+{
+	"type": "animation",
+	"currentLine": 9,
+	"nodes": {
+		"0": {
+			"id": 0,
+			"name": "A",
+			"position": {
+				"x": 50,
+				"y": 50
+			},
+			"color": "#00a600",
+			"annotation": "0",
+			"bold": false
+		},
+		"1": {
+			"id": 1,
+			"name": "B",
+			"position": {
+				"x": 100,
+				"y": 50
+			},
+			"color": "#f00",
+			"annotation": "inf?",
+			"bold": true
+		}
+	},
+	"edges": {
+		"0-1": {
+			"id": "0-1",
+			"start": 0,
+			"end": 1,
+			"weight": 1,
+			"highlight": false
+		}
+	},
+		"stack": [
+		]
+},
+{
+	"type": "animation",
+	"currentLine": 12,
+	"nodes": {
+		"0": {
+			"id": 0,
+			"name": "A",
+			"position": {
+				"x": 50,
+				"y": 50
+			},
+			"color": "#00a600",
+			"annotation": "0",
+			"bold": false
+		},
+		"1": {
+			"id": 1,
+			"name": "B",
+			"position": {
+				"x": 100,
+				"y": 50
+			},
+			"color": "#f00",
+			"annotation": "1?",
+			"bold": true
+		}
+	},
+	"edges": {
+		"0-1": {
+			"id": "0-1",
+			"start": 0,
+			"end": 1,
+			"weight": 1,
+			"highlight": false
+		}
+	},
+		"stack": [
+			"B:1"
+		]
+},
+{
+	"type": "animation",
+	"currentLine": 6,
+	"nodes": {
+		"0": {
+			"id": 0,
+			"name": "A",
+			"position": {
+				"x": 50,
+				"y": 50
+			},
+			"color": "#00a600",
+			"annotation": "0",
+			"bold": false
+		},
+		"1": {
+			"id": 1,
+			"name": "B",
+			"position": {
+				"x": 100,
+				"y": 50
+			},
+			"color": "#f00",
+			"annotation": "1?",
+			"bold": false
+		}
+	},
+	"edges": {
+		"0-1": {
+			"id": "0-1",
+			"start": 0,
+			"end": 1,
+			"weight": 1,
+			"highlight": false
+		}
+	},
+		"stack": [
+			"B:1"
+		]
+},
+{
+	"type": "animation",
+	"currentLine": 7,
+	"nodes": {
+		"0": {
+			"id": 0,
+			"name": "A",
+			"position": {
+				"x": 50,
+				"y": 50
+			},
+			"color": "#00a600",
+			"annotation": "0",
+			"bold": false
+		},
+		"1": {
+			"id": 1,
+			"name": "B",
+			"position": {
+				"x": 100,
+				"y": 50
+			},
+			"color": "#00a600",
+			"annotation": "1",
+			"bold": true
+		}
+	},
+	"edges": {
+		"0-1": {
+			"id": "0-1",
+			"start": 0,
+			"end": 1,
+			"weight": 1,
+			"highlight": true
+		}
+	},
+		"stack": [
+		]
+},
+{
+	"type": "animation",
+	"currentLine": 6,
+	"nodes": {
+		"0": {
+			"id": 0,
+			"name": "A",
+			"position": {
+				"x": 50,
+				"y": 50
+			},
+			"color": "#00a600",
+			"annotation": "0",
+			"bold": false
+		},
+		"1": {
+			"id": 1,
+			"name": "B",
+			"position": {
+				"x": 100,
+				"y": 50
+			},
+			"color": "#00a600",
+			"annotation": "1",
+			"bold": false
+		}
+	},
+	"edges": {
+		"0-1": {
+			"id": "0-1",
+			"start": 0,
+			"end": 1,
+			"weight": 1,
+			"highlight": false
+		}
+	},
+		"stack": [
+		]
+},
+{"type": "end"}]

@@ -2,12 +2,16 @@
 #include <string>
 #include <string.h>
 #include <vector>
+#include <map>
 #include <queue>
 #include <stdlib.h>
 #include <time.h>
 #include <algorithm>
 using namespace std;
 // these include statements carry over to .cpp files feeding into gOH.hpp
+
+static int itest = 0;
+#define ITEST cout << "TEST #" << itest++ << endl;
 
 // helps create unique alphabetical IDs for each Node.
 static string intToAlphaID(int n) {
@@ -57,12 +61,29 @@ static void printHelp() { // by God, is there a better way to do this? perhaps.
     cout << "3: tree" << endl;
     cout << "4: grid" << endl;
     cout << endl;
-    cout << "optional flags available:" << endl;
+    cout << "flags available:" << endl;
     cout << "-i\t\tname nodes using integers rather than letters." << endl;
     cout << "-nodes <n>\tforce the creation of n nodes in the graph. default 8." << endl;
     cout << "-w <n>\t\trandomize the edge weights to be integers between 1 and n. by default, n is 1, implying weightlessness." << endl;
     cout << "-v <n>\t\tedit variability; nodes have between 2 and n edges stemming from them. default n is 4. works best with high node counts." << endl;
     cout << "-g <n>\t\tgrid width; in a grid, how many nodes wide it is." << endl;
+    cout << "-t <n>\t\ttarget node to search for; applicable to something like DFS." << endl;
+    cout << "-c enables edges layering on top of one another." << endl;
     cout << endl;
     cout << "run ./graphOutputDriver -h or ./graphOutputDriver --help to display this help menu." << endl;
+}
+
+// straight up just print an integer vector within a line
+static void printVec(vector<int> v) {
+    for (auto n: v) {
+        cerr << n << ", ";
+    }
+    cerr << endl;
+}
+
+static void printMap(map<int,int> m){
+    for(auto it = m.begin();it!=m.end();it++){
+        cerr<< it->first<<": "<<it->second<<endl;
+    }
+    cerr<<endl;
 }

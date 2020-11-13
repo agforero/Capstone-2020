@@ -1,7 +1,7 @@
-#include "graphOutputHeader.hpp"
+#include "../source/graphMainHeader.hpp"
 
 int main(int argc, char ** argv) {
     Graph granny(argc, argv);
-    granny.prims();
+    granny.dijkstras();
     return 0;
 }
